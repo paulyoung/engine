@@ -107,6 +107,7 @@ describe 'DOM Getter', ->
       # Test the shorthand too
       measured = Math.floor get.measure div, 'y'
       chai.expect(measured).to.equal expected.top
+
   describe 'getting position from element with inherited offsets', ->
     div = null
     expected =
@@ -125,3 +126,11 @@ describe 'DOM Getter', ->
       # Test the shorthand too
       measured = Math.floor get.measure div, 'y'
       chai.expect(measured).to.equal expected.top
+
+  describe 'reading ASTs', ->
+    describe 'text/gss-ast', ->
+      it 'should throw an error when parsing fails', ->
+        node = document.createElement 'style'
+        node.textContent = '::window[width] != body[width] !require;'
+        method = get['readAST:text/gss-ast']
+        chai.expect(method(node)).to.throw(Error)
